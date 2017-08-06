@@ -16,15 +16,15 @@ if (array_key_exists("request", $_GET) &&
 if (array_key_exists("offset", $_GET) && is_numeric($_GET["offset"])) {
 	$offset = $_GET["offset"];
 }
-if (array_key_exists("limit", $_GET)) {
+if (array_key_exists("limit", $_GET) && is_numeric($_GET["limit"])) {
 	$limit = $_GET["limit"];
 }
 
-echo read_csv($request, $offset, $limit);
+echo csv_to_json($request, $offset, $limit);
 
-function read_csv($request, $offset, $limit) {
+function csv_to_json($request, $offset, $limit) {
 	//initiate array for json encoding
-	$trimmed_array = array();
+	$json_array = array();
 
 	$handle = fopen($request . ".csv", "r");
 	//first row gives us array of field names
@@ -45,22 +45,23 @@ function read_csv($request, $offset, $limit) {
 	$row = 1;
 	while ($row <= $limit) {
 		$row_array = fgetcsv($handle);
-		$trimmed_array[$row_array[0]] = array();
 		/*
 		for each row, we want to create a key-value pair,
-		with the idx field as the key and an array as the value.
-		Said array will use the field names as keys and the values read from the csv row
+		with the idx field($row_array[0]) as the key and an array as the value.
+		Said array will use the field names as keys and the csv values read from $row_array
 		as values.
 		*/
+		$json_array[$row_array[0]] = array();
+		
 		for ($i = 1; $i < count($fields); $i++) {
-			$trimmed_array[$row_array[0]][$fields[$i]] = $row_array[$i];
+			$json_array[$row_array[0]][$fields[$i]] = $row_array[$i];
 
 		}
 		$row++;
 
 	}
 
-	return json_encode(array($request => $trimmed_array));
+	return json_encode(array($request => $json_array));
 }
 
 
