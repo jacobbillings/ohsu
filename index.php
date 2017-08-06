@@ -5,10 +5,15 @@ $request = "person";
 $offset = 0;
 $limit = 1;
 
-if (array_key_exists("request", $_GET)) {
+/*
+check for user-supplied parameters,
+and replace defaults if they are given and valid
+*/
+if (array_key_exists("request", $_GET) && 
+	($_GET["request"] == "person" or $_GET["request"] == "items")) {
 	$request = $_GET["request"];
 }
-if (array_key_exists("offset", $_GET)) {
+if (array_key_exists("offset", $_GET) && is_numeric($_GET["offset"])) {
 	$offset = $_GET["offset"];
 }
 if (array_key_exists("limit", $_GET)) {
