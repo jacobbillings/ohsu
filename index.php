@@ -49,6 +49,7 @@ function csv_to_json($request, $offset, $limit) {
 
 	//Open csv file, return error message if not found
 	if (($handle = fopen($request . ".csv", "r")) == FALSE) {
+		fclose($handle);
 		return "Requested file not found";
 	}
 	//First row gives us array of field names
@@ -95,10 +96,11 @@ function csv_to_json($request, $offset, $limit) {
 	/*
 	JSON encode and return the array we've built, adding a top level element named after the request type. return "{}" if the offset parameter put us past all the rows.
 	*/
+	fclose($handle);
 	if ($json_array == NULL) {
 		return "{}";
 	}
 	//fixed bug: '$jason_array' changed to '$json_array'
 	return json_encode(array($request => $json_array));
 }
- ?>
+?>
