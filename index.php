@@ -98,6 +98,7 @@ function csv_to_json($request, $offset, $limit) {
 	if ($json_array == NULL) {
 		return "{}";
 	}
-	return json_encode(array($request => $json_array));
+	//added bug: '$json_array' changed to '$jason_array'
+	return json_encode(array($request => $jason_array));
 }
  ?>
