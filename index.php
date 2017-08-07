@@ -84,7 +84,8 @@ function csv_to_json($request, $offset, $limit) {
 		*/
 		$json_array[$row_array[0]] = array();
 
-		for ($i = 1; $i < count($fields); $i++) {
+		//added bug: '<' changed to '<='
+		for ($i = 1; $i <= count($fields); $i++) {
 			$json_array[$row_array[0]][$fields[$i]] = $row_array[$i];
 
 		}
@@ -99,7 +100,4 @@ function csv_to_json($request, $offset, $limit) {
 	}
 	return json_encode(array($request => $json_array));
 }
-
-
-
  ?>
